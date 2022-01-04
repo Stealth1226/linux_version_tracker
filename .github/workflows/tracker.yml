@@ -1,0 +1,22 @@
+name: Releases Tracker
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Run bot
+         env: 
+           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+           TG_TOKEN: ${{ secrets.TG_TOKEN }}
+         run: |
+           git clone https://github.com/Stealth1226/linux_version_tracker && cd linux_version_tracker
+           sudo apt install pandoc -y
+           echo $GH_TOKEN > ~/.git-credentials
+           git config --global credential.helper store
+           git config --global user.name Stealth1226
+           git config --global user.email rishawniyer06@gmail.com
+           bash linux_releases.sh
