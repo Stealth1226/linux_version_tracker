@@ -4,7 +4,6 @@ curl -s https://www.kernel.org/ > releases
 pandoc +RTS -K1073741824 -RTS releases -f html -t markdown_github+pipe_tables -o releases.md
 
 mkdir versions
-rm new_releases
 touch new_releases
 for i in mainline stable; do
 	cat releases.md | grep $i: | awk '{ print $4 }' | sed s/'**'//g > versions/$i
@@ -17,7 +16,7 @@ for i in $(cat versions/longterm); do
 done
 
 for i in $(cat versions/mainline versions/stable versions/longterm-*); do
-	grep $i releases_list || echo $i >> new_releases
+	grep -x $i releases_list || echo $i >> new_releases
 done
 
 cat versions/stable > releases_list
