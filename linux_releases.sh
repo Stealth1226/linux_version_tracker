@@ -27,11 +27,13 @@ rm -rf versions
 if [ -n "$(git status --porcelain)" ]; then export NEW_RELEASE=true && git add . &&  git commit -m "sync $(date +%d-%m-%y)" -m "$(cat new_releases)" && git push; else exit 0; fi
 
 if [ "NEW_RELEASE" ]; then
-	### Send message to telegram ###
-	wget https://raw.githubusercontent.com/fabianonline/telegram.sh/master/telegram
-	sudo mv telegram /usr/bin
-	sudo chmod +x /usr/bin/telegram
-	UPDATE_MESSAGE=$(echo "*New Release Found!*")
-	echo $TG_TOKEN > ~/.telegram.sh
-	telegram -M "$UPDATE_MESSAGE"$'\n'"[$(cat new_releases)](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/)"
+	if [ -s new_releases ]; then
+		### Send message to telegram ###
+		wget https://raw.githubusercontent.com/fabianonline/telegram.sh/master/telegram
+		sudo mv telegram /usr/bin
+		sudo chmod +x /usr/bin/telegram
+		UPDATE_MESSAGE=$(echo "*New Release Found!*")
+		echo $TG_TOKEN > ~/.telegram.sh
+		telegram -M "$UPDATE_MESSAGE"$'\n'"[$(cat new_releases)](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/)"
+	fi
 fi
