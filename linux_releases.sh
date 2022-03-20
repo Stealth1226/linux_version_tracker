@@ -24,7 +24,7 @@ cat versions/mainline >> releases_list
 cat versions/longterm >> releases_list
 rm -rf versions
 
-if [ -n "$(git status --porcelain)" ]; then export NEW_RELEASE=true && git add . &&  git commit -m "sync $(date +%d-%m-%y)" -m "$(cat new_releases)" && git push; else exit 0; fi
+if [ -n "$(git status --porcelain)" ]; then export NEW_RELEASE=true && git add . &&  git commit -m "sync  $(date +%d/%m/%y) $(date -u +%r) GMT" -m "New releases:" -m "$(cat new_releases)" && git push; else exit 0; fi
 
 if [ "NEW_RELEASE" ]; then
 	if [ -s new_releases ]; then
